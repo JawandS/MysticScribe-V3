@@ -4,7 +4,22 @@ Last updated: 2026-08-15
 
 ## Status
 
-The repository is new. The project is defining a contained v0 proof of concept; no implementation stack has been selected.
+The repository is new. The contained v0 proof of concept now has an implementation-ready architecture baseline in `docs/v0-architecture.md` and an ordered development backlog in `docs/v0-tech-todo.md`; implementation has not begun.
+
+## Progress
+
+Completed:
+
+- Defined the contained v0 scope, simulation topology, and fixed round-robin loop.
+- Selected Pydantic AI with LiteLLM Proxy, one SQLite-backed state MCP server, and application-owned scheduling.
+- Defined the minimal Character Actor and Action Adjudicator collaboration.
+- Defined scoped knowledge, stateless agent calls, atomic state commits, ordinal time, and the generic d20 mechanic.
+- Recorded the implementation baseline and acceptance criteria in `docs/v0-architecture.md`.
+- Created the ordered technical backlog in `docs/v0-tech-todo.md`.
+
+Next milestone:
+
+- Implement **Project Foundation**, the first backlog section.
 
 ## Vision
 
@@ -32,6 +47,8 @@ Build a modern, provider-portable autonomous multi-agent world simulation that c
 - Chat covers one main idea at a time and remains ultra-concise.
 - Discovery and decisions happen through a single continuing chat thread.
 - Ask at most one focused question at a time and allow it to be resolved before advancing.
+- Make reasonable assumptions for simple, low-risk choices; ask only when a decision materially affects architecture, behavior, or cost.
+- Adopt a clear recommendation without asking for confirmation; stop only when required information or a consequential preference is genuinely unknown.
 - Documents preserve context and decisions; they are not workbooks for the user to complete.
 
 ## Current Simulation Hypothesis
@@ -65,6 +82,38 @@ The earlier DM-copilot direction is no longer the leading scope.
 - JSON is used for seed data, snapshots, and debugging fixtures.
 - All mutations pass through structured, validated commands rather than direct agent access to SQLite.
 
+## Confirmed v0 Execution Boundary
+
+- RNG is an ordinary Pydantic AI function tool.
+- World and character state are exposed through one MCP server backed by SQLite.
+- The simulation clock and scheduler remain application code.
+
+## Confirmed v0 Simulation Loop
+
+- The simulation proceeds like turns around a D&D table: one character acts at a time.
+- Characters act in a fixed repeating order; initiative and interrupts are deferred beyond v0.
+- Each character proposes one high-level action per turn; the adjudicator resolves the complete action.
+- For each turn, the scheduler activates a character, the character agent proposes an action, the adjudicator resolves it using deterministic tools when needed, the state MCP server validates and commits resulting changes, the event is logged, and the clock advances.
+
+## Confirmed v0 Agent Set
+
+- Character Actors propose actions for the character currently taking a turn.
+- One shared Action Adjudicator resolves proposed actions.
+- v0 has no separate Narrator or Character Steward agent.
+- The observer sees the adjudicator's structured outcome, rendered directly by application code.
+- Validated state changes are executed through the state MCP server rather than delegated to another agent.
+
+## Confirmed v0 Runtime Defaults
+
+- Character knowledge is scoped: actors cannot see hidden world facts or another character's private knowledge.
+- Agent calls are stateless; durable character memories remain in canonical state.
+- One reusable Character Actor definition serves character-specific context, and one shared Action Adjudicator serves all turns.
+- v0 uses an ordinal clock: one tick per committed turn and one round after every eligible character has acted.
+- In-world failure consumes a turn; technical failure does not advance state or time.
+- Resolutions commit state changes and an append-only event atomically, with optimistic versioning and idempotency.
+- Mechanical checks use a bounded generic d20 rule with easy, moderate, and hard difficulties.
+- The initial fixture uses one location, three placeholder characters, and a three-round default run.
+
 ## Candidate Agent Roles
 
 - **Character Actor:** pursues a character's goals using its knowledge, memories, relationships, and current situation.
@@ -84,7 +133,7 @@ The observer should see one evolving world while still being able to inspect age
 - Treat model usage and monetary cost as project-owned simulation data, attributable to an agent, model, provider, and simulation run.
 - Use MCP for external or reusable tool boundaries, not every internal function.
 - Store portable skills as vendor-neutral `SKILL.md` packages.
-- Begin with OpenAI directly; add a router such as LiteLLM only when a second provider or centralized routing is exercised.
+- Use the selected LiteLLM Proxy as the v0 routing and budget boundary while keeping provider-specific configuration outside simulation logic.
 - Use OpenTelemetry as the preferred observability boundary.
 
 ## Confirmed Context Boundaries
@@ -136,7 +185,7 @@ This selection preserves provider portability while keeping agent, tool, MCP, us
 
 ### Active
 
-Choose which v0 capabilities are ordinary Pydantic AI tools and which are exposed through MCP.
+None currently.
 
 ### Parked
 

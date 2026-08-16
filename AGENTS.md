@@ -2,6 +2,15 @@
 
 These rules apply to the entire repository.
 
+## Current Project State
+
+- v0 discovery and architecture decisions are complete.
+- `docs/project-memory.md` is the durable project summary.
+- `docs/v0-architecture.md` is the confirmed implementation baseline.
+- `docs/v0-tech-todo.md` is the ordered development backlog.
+- Implementation has not started; begin with **Project Foundation** in the backlog.
+- Keep deferred features out of v0 unless the user explicitly changes scope.
+
 ## Conversation
 
 - Keep chat focused on one main idea, topic, or decision at a time.
@@ -26,3 +35,5 @@ These rules apply to the entire repository.
 - Do not scaffold architecture from provisional ideas.
 - Before implementation, identify the single decision currently being made.
 - Prefer small, reviewable changes with explicit verification.
+- Follow the v0 backlog in dependency order and mark items complete only after verification.
+- Update the current project state and project memory after meaningful implementation milestones.
