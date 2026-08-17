@@ -8,7 +8,8 @@ These rules apply to the entire repository.
 - `docs/project-memory.md` is the durable project summary.
 - `docs/v0-architecture.md` is the confirmed implementation baseline.
 - `docs/v0-tech-todo.md` is the ordered development backlog.
-- Implementation has not started; begin with **Project Foundation** in the backlog.
+- Implementation has begun; **Project Foundation** is complete and verified.
+- Begin next with **Domain Contracts** in the backlog.
 - Keep deferred features out of v0 unless the user explicitly changes scope.
 
 ## Conversation
@@ -37,3 +38,15 @@ These rules apply to the entire repository.
 - Prefer small, reviewable changes with explicit verification.
 - Follow the v0 backlog in dependency order and mark items complete only after verification.
 - Update the current project state and project memory after meaningful implementation milestones.
+
+## Development Framework
+
+- Work autonomously through one requested backlog stage, making reasonable low-risk assumptions.
+- Use `uv` for Python versions, dependencies, locking, environments, builds, and command execution.
+- Keep runtime dependencies bounded to compatible versions and commit `uv.lock` as the exact resolution.
+- Define portable quality tasks in `pyproject.toml`; the full local gate is `uv run poe check`.
+- Track implementation and verification in `docs/v0-tech-todo.md` as work progresses.
+- Update `docs/project-memory.md` after a stage passes its completion criteria.
+- End a completed stage with exactly two concise overview sentences and up to three material unresolved questions for user review.
+- Never pad a handoff with trivial, reversible, or safely assumed questions.
+- A multi-question stage handoff is the explicit exception to the conversation rule limiting chat to one question at a time.

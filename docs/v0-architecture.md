@@ -17,7 +17,7 @@ It does not attempt to provide a complete D&D rules engine, combat system, polis
 5. SQLite stores canonical state, committed events, RNG results, and usage attribution.
 6. The CLI renders committed outcomes and diagnostic activity directly; there is no Narrator agent.
 
-LiteLLM remains the model-routing boundary, while all model names and provider credentials remain configuration.
+LiteLLM remains the model-routing boundary, while all model names and provider credentials remain configuration. The Character Actor and Action Adjudicator use separate stable route aliases, although both aliases may resolve to the same underlying model.
 
 ## Turn Lifecycle
 
@@ -139,6 +139,8 @@ The initial SQLite model contains:
 
 Current-state changes and their corresponding event are written in one transaction. JSON is used inside bounded payload columns where the domain is intentionally flexible and for seed fixtures and exported snapshots.
 
+Database initialization is deliberately non-destructive: `init` creates a database only when the configured path does not exist and rejects an existing database. Reinitialization requires the operator to remove the existing database explicitly first.
+
 ## Initial Fixture
 
 The development fixture uses one contained location and three placeholder characters with distinct goals, attributes, and private facts. It includes at least one situation likely to require a check and one conflict between what the world knows and what an individual character knows.
@@ -170,4 +172,3 @@ OpenTelemetry is the instrumentation boundary. SQLite retains the project-owned 
 - Duplicate commit attempts cannot apply a resolution twice.
 - Model or schema failures are visible and do not silently advance the clock.
 - The observer can attribute model usage and tool activity to a run, turn, and agent role.
-

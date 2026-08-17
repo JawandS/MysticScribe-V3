@@ -1,10 +1,10 @@
 # MysticScribe Project Memory
 
-Last updated: 2026-08-15
+Last updated: 2026-08-17
 
 ## Status
 
-The repository is new. The contained v0 proof of concept now has an implementation-ready architecture baseline in `docs/v0-architecture.md` and an ordered development backlog in `docs/v0-tech-todo.md`; implementation has not begun.
+The contained v0 proof of concept has an implementation-ready architecture baseline and ordered backlog. Project Foundation is implemented and verified; Domain Contracts is the next stage.
 
 ## Progress
 
@@ -16,10 +16,24 @@ Completed:
 - Defined scoped knowledge, stateless agent calls, atomic state commits, ordinal time, and the generic d20 mechanic.
 - Recorded the implementation baseline and acceptance criteria in `docs/v0-architecture.md`.
 - Created the ordered technical backlog in `docs/v0-tech-todo.md`.
+- Created the Python 3.12 `src/` package and reproducible `uv` environment.
+- Added typed environment configuration for model routing, storage, determinism, retries, and run limits.
+- Added the Typer `init`, `run`, and `inspect` CLI shell plus portable Poe quality tasks.
+- Verified the distribution build, CLI startup, formatting, lint, strict typing, and six tests.
 
 Next milestone:
 
-- Implement **Project Foundation**, the first backlog section.
+- Implement **Domain Contracts**, the second backlog section.
+
+## Implemented Foundation Baseline
+
+- Support Python 3.12 only for v0 and use `uv.lock` for exact dependency reproducibility.
+- Use a `src/mysticscribe` package with an installed `mysticscribe` CLI.
+- Use Pydantic Settings with `MYSTICSCRIBE_` environment variables and `__` for nested values.
+- Use Pydantic AI Slim with only the OpenAI-compatible, MCP, and retry extras needed by the architecture.
+- Run formatting, linting, strict type checking, and tests through `uv run poe check`.
+- Database initialization must reject an existing database; replacement requires deleting it explicitly first.
+- Keep separate LiteLLM route aliases for the Character Actor and Action Adjudicator; both may initially resolve to the same underlying model.
 
 ## Vision
 

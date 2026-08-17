@@ -1,0 +1,53 @@
+[build-system]
+requires = ["uv_build>=0.9.29,<0.10.0"]
+build-backend = "uv_build"
+
+[project]
+name = "mysticscribe"
+version = "0.1.0"
+description = "An observable autonomous multi-agent world simulation"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "pydantic-ai-slim[mcp,openai,retries]>=2.31,<3.0",
+    "pydantic-settings>=2.15,<3.0",
+    "typer>=0.27,<1.0",
+]
+
+[project.scripts]
+mysticscribe = "mysticscribe.cli:app"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.3,<3.0",
+    "poethepoet>=0.46,<1.0",
+    "pytest>=9.1,<10.0",
+    "ruff>=0.16,<1.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+
+[tool.poe.tasks]
+format = [
+    { cmd = "ruff format ." },
+    { cmd = "ruff check --fix ." },
+]
+format-check = "ruff format --check ."
+lint = "ruff check ."
+typecheck = "mypy"
+test = "pytest"
+check = ["format-check", "lint", "typecheck", "test"]

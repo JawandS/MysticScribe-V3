@@ -4,13 +4,16 @@ This backlog is ordered to produce a testable vertical slice early. Complete eac
 
 ## 1. Project Foundation
 
-- [ ] Create the Python package and `pyproject.toml`.
-- [ ] Pin the supported Python version and core dependencies.
-- [ ] Add typed configuration for model routing, database path, seed, retry limit, and run length.
-- [ ] Add commands for formatting, linting, type checking, and tests.
-- [ ] Add a minimal CLI entry point with explicit `init`, `run`, and `inspect` commands.
+- [x] Create the Python package and `pyproject.toml`.
+- [x] Pin the supported Python version and core dependencies.
+- [x] Add typed configuration for model routing, database path, seed, retry limit, and run length.
+- [x] Add commands for formatting, linting, type checking, and tests.
+- [x] Add a minimal CLI entry point with explicit `init`, `run`, and `inspect` commands.
 
 Done when the empty application installs, starts, and passes all local checks.
+
+Status: complete (2026-08-16). Verified with the locked `uv` environment, package builds,
+all three CLI commands, and `uv run poe check` (format, lint, strict types, and six tests).
 
 ## 2. Domain Contracts
 
@@ -154,4 +157,3 @@ Done when all architecture acceptance criteria pass automatically.
 - Multiple locations and broad world simulation.
 - Rich UI, VTT integration, voice, and multiplayer controls.
 - Additional model providers beyond validating the existing routing boundary.
-
